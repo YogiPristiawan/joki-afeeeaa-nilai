@@ -30,12 +30,28 @@ class NilaiController extends Controller
 
         $data = $data->paginate(10);
 
-        // Menggunakan json_decode untuk setiap item pada array results
+        // ubah nilai yang semula desimal menjadi persen
         foreach ($data as $item) {
-            $item->results = json_decode($item->results, true);
+            $item["average_score_i"] = $this->decimalToPercentString($item["average_score_i"]);
+            $item["average_score_e"] = $this->decimalToPercentString($item["average_score_e"]);
+            $item["average_score_s"] = $this->decimalToPercentString($item["average_score_n"]);
+            $item["average_score_n"] = $this->decimalToPercentString($item["average_score_n"]);
+            $item["average_score_t"] = $this->decimalToPercentString($item["average_score_t"]);
+            $item["average_score_f"] = $this->decimalToPercentString($item["average_score_f"]);
+            $item["average_score_j"] = $this->decimalToPercentString($item["average_score_j"]);
+            $item["average_score_p"] = $this->decimalToPercentString($item["average_score_p"]);
         }
 
         return view('nilai.index', compact('data', 'sort', 'order', 'keyword'));
+    }
+
+    // fungsi untuk mengubah angka desimal menjadi text persen
+    private function decimalToPercentString(float $decimalNumber): string
+    {
+        $percent = $decimalNumber * 100;
+        $precentString = number_format($percent, 2, ",", ".");
+
+        return $precentString . "%";
     }
 
 
